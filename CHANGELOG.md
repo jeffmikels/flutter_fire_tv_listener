@@ -1,3 +1,7 @@
+## 0.0.5
+
+-   added documentation link to `pubspec.yaml`.
+
 ## 0.0.4
 
 -   removed `onBack` callback. The Fire TV remote `back` button sends a standard Android `Back` event
