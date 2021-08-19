@@ -8,20 +8,41 @@ import 'package:flutter/services.dart';
 ///
 /// This widget requires a [FocusNode] and a [Widget] child.
 ///
-/// The special [afterKey] function is called after every detected event has
-/// been handled. This is useful for triggering a widget rebuild, or for
-/// passing keyboard event data back to the parent for further handling
+/// Most key press events are called immediately when the user presses a button.
+///
+/// The special [afterKey] function is called after every detected event whether
+/// a press [RawKeyDownEvent] or release [RawKeyUpEvent]. It is called after the
+/// other events have been handled. This is useful for triggering a widget rebuild,
+/// or for passing keyboard event data back to the parent for further handling.
 class FireTVRemoteListener extends StatelessWidget {
+  /// Will be called whenever the user presses Up on the remote.
   final void Function()? onUp;
+
+  /// Will be called whenever the user presses Down on the remote.
   final void Function()? onDown;
+
+  /// Will be called whenever the user presses Left on the remote.
   final void Function()? onLeft;
+
+  /// Will be called whenever the user presses Right on the remote.
   final void Function()? onRight;
+
+  /// Will be called whenever the user presses the Center Button on the remote.
   final void Function()? onSelect;
+
+  /// Will be called whenever the user presses Play/Pause on the remote.
   final void Function()? onPlayPause;
+
+  /// Will be called whenever the user presses Rewind on the remote.
   final void Function()? onRew;
+
+  /// Will be called whenever the user presses FastForward on the remote.
   final void Function()? onFF;
+
+  /// Will be called whenever the user presses the Menu Button on the remote.
   final void Function()? onMenu;
-  final void Function()? onBack;
+
+  /// Will be called after every key event whether KeyDown or KeyUp.
   final void Function(RawKeyEvent)? afterKey;
   final Widget child;
   final FocusNode focusNode;
@@ -37,7 +58,6 @@ class FireTVRemoteListener extends StatelessWidget {
     this.onRew,
     this.onFF,
     this.onMenu,
-    this.onBack,
     this.afterKey,
     required this.child,
     required this.focusNode,
