@@ -10,7 +10,7 @@ import 'package:flutter/services.dart';
 ///
 /// Most key press events are called immediately when the user presses a button.
 ///
-/// The special [afterKey] function is called after every detected event whether
+/// The special [afterButton] function is called after every detected event whether
 /// a press [RawKeyDownEvent] or release [RawKeyUpEvent]. It is called after the
 /// other events have been handled. This is useful for triggering a widget rebuild,
 /// or for passing keyboard event data back to the parent for further handling.
@@ -42,10 +42,20 @@ class FireTVRemoteListener extends StatelessWidget {
   /// Will be called whenever the user presses the Menu Button on the remote.
   final void Function()? onMenu;
 
-  /// Will be called after every key event whether KeyDown or KeyUp.
-  final void Function(RawKeyEvent)? afterKey;
-  final Widget child;
+  /// Will be called for every [RawKeyDownEvent].
+  final void Function(RawKeyDownEvent)? onPressed;
+
+  /// Will be called for every [RawKeyUpEvent].
+  final void Function(RawKeyUpEvent)? onReleased;
+
+  /// Will be called after every key event whether [RawKeyDownEvent] or [RawKeyUpEvent].
+  final void Function(RawKeyEvent)? afterButton;
+
+  /// All widgets that listen to keyboard events need a [FocusNode]. This widget is stateless,
+  /// so you need to create [focusNode] externally. Remember to [dispose] all [FocusNode]s.
   final FocusNode focusNode;
+
+  final Widget child;
 
   const FireTVRemoteListener({
     Key? key,
@@ -58,11 +68,16 @@ class FireTVRemoteListener extends StatelessWidget {
     this.onRew,
     this.onFF,
     this.onMenu,
-    this.afterKey,
+    this.onPressed,
+    this.onReleased,
+    this.afterButton,
     required this.child,
     required this.focusNode,
   }) : super(key: key);
 
+  /// For some reason, Flutter [LogicalKeyboardKey] getters are not constant
+  /// and therefore cannot be used properly in switch/case statements.
+  /// We must use if/else to handle each possible event.
   void handleEvent(RawKeyEvent event) {
     print(event);
     if (event is RawKeyDownEvent) {
@@ -87,8 +102,11 @@ class FireTVRemoteListener extends StatelessWidget {
       } else if (event.logicalKey == LogicalKeyboardKey.mediaPlayPause) {
         onPlayPause?.call();
       }
+      onPressed?.call(event);
+    } else if (event is RawKeyUpEvent) {
+      onReleased?.call(event);
     }
-    afterKey?.call(event);
+    afterButton?.call(event);
   }
 
   @override
