@@ -1,7 +1,8 @@
 name: fire_tv_listener
 description: Widget to listen to events from a Fire TV Remote Control.
-version: 0.0.2
+version: 0.0.3
 homepage: https://pub.dev/packages/fire_tv_listener
+repository: https://github.com/jeffmikels/flutter_fire_tv_listener
 
 environment:
   sdk: ">=2.12.0 <3.0.0"
