@@ -33,7 +33,7 @@ void main() {
       onFF: () => keyPairs[LogicalKeyboardKey.mediaFastForward.toStringShort()] = true,
       onRew: () => keyPairs[LogicalKeyboardKey.mediaRewind.toStringShort()] = true,
       onPlayPause: () => keyPairs[LogicalKeyboardKey.mediaPlayPause.toStringShort()] = true,
-      afterKey: (event) => afterKey = event,
+      afterButton: (event) => afterKey = event,
       focusNode: fn,
       child: Container(),
     ));
