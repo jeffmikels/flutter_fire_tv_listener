@@ -7,7 +7,9 @@ import 'package:fire_tv_listener/fire_tv_listener.dart';
 void main() {
   testWidgets('checks the up event', (tester) async {
     var fn = FocusNode();
-    RawKeyEvent? afterKey;
+    RawKeyEvent? afterButtonEvent;
+    RawKeyEvent? keyDownEvent;
+    RawKeyEvent? keyUpEvent;
 
     var keysToTest = [
       LogicalKeyboardKey.arrowUp,
@@ -33,7 +35,9 @@ void main() {
       onFF: () => keyPairs[LogicalKeyboardKey.mediaFastForward.toStringShort()] = true,
       onRew: () => keyPairs[LogicalKeyboardKey.mediaRewind.toStringShort()] = true,
       onPlayPause: () => keyPairs[LogicalKeyboardKey.mediaPlayPause.toStringShort()] = true,
-      afterButton: (event) => afterKey = event,
+      onPressed: (event) => keyDownEvent = event,
+      onReleased: (event) => keyUpEvent = event,
+      afterButton: (event) => afterButtonEvent = event,
       focusNode: fn,
       child: Container(),
     ));
@@ -41,7 +45,10 @@ void main() {
     for (var k in keysToTest) {
       await tester.sendKeyDownEvent(k);
       expect(keyPairs[k.toStringShort()], true);
-      expect(afterKey!.logicalKey.toStringShort(), k.toStringShort());
+      expect(afterButtonEvent!.logicalKey.toStringShort(), k.toStringShort());
+      expect(keyDownEvent!.logicalKey.toStringShort(), k.toStringShort());
+      await tester.sendKeyUpEvent(k);
+      expect(keyUpEvent!.logicalKey.toStringShort(), k.toStringShort());
     }
   });
 }

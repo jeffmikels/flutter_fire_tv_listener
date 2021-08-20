@@ -1,3 +1,7 @@
+## 0.0.6
+
+-   changed `afterKey` to `afterButton` and added `onPressed` and `onReleased` event callbacks
+
 ## 0.0.5
 
 -   added documentation link to `pubspec.yaml`.
